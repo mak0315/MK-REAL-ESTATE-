@@ -47,7 +47,7 @@
 
   const header = `
   <header class="site-header"><div class="wrap nav">
-    <a class="logo" href="index.html"><span class="logo-mark">MK</span>
+    <a class="logo" href="index.html">
       <span>${SITE.name}<small>${SITE.tagline}</small></span></a>
     <ul class="nav-links" id="navLinks">${navItems}</ul>
     <div class="header-actions">
