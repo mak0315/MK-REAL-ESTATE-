@@ -8,7 +8,7 @@ export default async function handler(request, response) {
   try {
     const listRes = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
-      { headers: { Accept: "application/vnd.github.v3+json" } }
+      { headers: { Accept: "application/vnd.github.v3+json", "User-Agent": "MK-Real-Estate-CMS" } }
     );
 
     if (!listRes.ok) {
@@ -24,7 +24,7 @@ export default async function handler(request, response) {
     const properties = [];
     for (const file of jsonFiles) {
       try {
-        const fileRes = await fetch(file.download_url);
+        const fileRes = await fetch(file.download_url, { headers: { "User-Agent": "MK-Real-Estate-CMS" } });
         if (fileRes.ok) {
           const prop = await fileRes.json();
           properties.push(prop);

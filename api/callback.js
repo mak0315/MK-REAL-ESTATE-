@@ -18,6 +18,12 @@ export default async function handler(request, response) {
   const clientId = process.env.OAUTH_GITHUB_CLIENT_ID;
   const clientSecret = process.env.OAUTH_GITHUB_CLIENT_SECRET;
 
+  if (!clientId || !clientSecret) {
+    response.writeHead(500, { "Content-Type": "text/html" });
+    response.end(`<h1>Configuration Error</h1><p>OAuth credentials not configured. Please set OAUTH_GITHUB_CLIENT_ID and OAUTH_GITHUB_CLIENT_SECRET in Vercel environment variables.</p>`);
+    return;
+  }
+
   try {
     const tokenRes = await fetch("https://github.com/login/oauth/access_token", {
       method: "POST",

@@ -15,7 +15,7 @@ collections:
     folder: "data/properties"
     create: true
     slug: "{{slug}}"
-    summary: "{{title}} &mdash; {{location}}"
+    summary: "{{title}} — {{location}}"
     fields:
       - { name: "id", label: "Property ID", widget: "string", required: true }
       - { name: "title", label: "Title", widget: "string", required: true }
