@@ -6,7 +6,7 @@
    ============================================================ */
 
 const SITE = {
-  name: "Muneeb Khan MK Real Estate",
+  name: "MK Real Estate",
   short: "MK Real Estate",
   tagline: "Property Dealers",
   url: "https://mkrealestate.vercel.app",
@@ -70,7 +70,9 @@ const IMAGE = {
   blog7: "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?q=80&w=900&auto=format&fit=crop",
   blog8: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=900&auto=format&fit=crop",
   blog9: "https://images.unsplash.com/photo-1556912116-1a0d78160671?q=80&w=900&auto=format&fit=crop",
-  blog10: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?q=80&w=900&auto=format&fit=crop"
+  blog10: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?q=80&w=900&auto=format&fit=crop",
+  blog11: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=900&auto=format&fit=crop",
+  blog12: "https://images.unsplash.com/photo-1529147688730-3e0d079e9c02?q=80&w=900&auto=format&fit=crop"
 };
 
 /* LISTINGS
@@ -162,7 +164,12 @@ const LOCATIONS = [
     description: "Looking for a property dealer in Havelian? MK Real Estate helps you buy and sell houses, residential plots, commercial property and land in Havelian, Pakistan. Contact us on WhatsApp.",
     keywords: ["property dealer in Havelian", "real estate agent in Havelian", "houses for sale in Havelian", "plots for sale in Havelian", "land for sale in Havelian", "commercial property in Havelian", "real estate investment in Havelian", "property prices in Havelian", "best property dealers in Havelian", "buy property in Havelian Pakistan"],
     intro: "MK Real Estate is a trusted property dealer in Havelian, serving buyers, sellers and investors across the town and surrounding housing schemes. We deal in residential plots, houses, commercial property and agricultural land.",
-    areas: ["Havelian", "Housing schemes Havelian", "Main Bazar Havelian"]
+    areas: ["Havelian", "Housing schemes Havelian", "Main Bazar Havelian"],
+    faq: [
+      {q:"What types of property are available in Havelian?",a:"Residential plots, houses, commercial shops and agricultural land are available in Havelian and surrounding housing schemes."},
+      {q:"How can I contact a property dealer in Havelian?",a:"You can message MK Real Estate on WhatsApp or call Muhammad Ayan Khan at 0315-5881733 or Haider Ali Shah at 0313-5820606."},
+      {q:"Are there plots for sale in Havelian?",a:"Yes. MK Real Estate lists residential plots in Havelian including corner plots and main road locations. Contact us for current availability."}
+    ]
   },
   {
     key: "sultanpur",
@@ -173,7 +180,12 @@ const LOCATIONS = [
     description: "Real estate in Sultanpur near Havelian. Explore plots, houses and commercial property for sale in Sultanpur with MK Real Estate. Local property experts in the Hazara region.",
     keywords: ["property dealer in Sultanpur Havelian", "real estate in Sultanpur", "plots for sale in Sultanpur", "houses for sale in Sultanpur", "land for sale in Sultanpur", "commercial property in Sultanpur", "property prices in Sultanpur", "investment opportunities in Sultanpur", "property for sale near Havelian"],
     intro: "Sultanpur, near Havelian, is a growing residential and commercial market. MK Real Estate helps buyers and sellers find plots, houses, shops and land in Sultanpur and nearby areas.",
-    areas: ["Sultanpur", "Sultanpur Havelian", "Main Bazar Sultanpur"]
+    areas: ["Sultanpur", "Sultanpur Havelian", "Main Bazar Sultanpur"],
+    faq: [
+      {q:"What types of property are available in Sultanpur?",a:"Residential plots, houses, commercial shops and agricultural land are available in Sultanpur near Havelian."},
+      {q:"How can I contact a property dealer in Sultanpur?",a:"You can message MK Real Estate on WhatsApp or call Muhammad Ayan Khan at 0315-5881733 or Haider Ali Shah at 0313-5820606."},
+      {q:"Are there plots for sale in Sultanpur?",a:"Yes. MK Real Estate lists residential plots in Sultanpur. Contact us for current availability and pricing."}
+    ]
   },
   {
     key: "abbottabad",
@@ -184,7 +196,12 @@ const LOCATIONS = [
     description: "Property dealer in Abbottabad. MK Real Estate offers houses, plots, commercial property and agricultural land for sale in Abbottabad. Contact our local real estate agents.",
     keywords: ["property dealer in Abbottabad", "real estate agents in Abbottabad", "houses for sale in Abbottabad", "plots for sale in Abbottabad", "commercial property in Abbottabad", "agricultural land for sale in Abbottabad", "property investment in Abbottabad", "best real estate agency in Abbottabad", "property prices in Abbottabad"],
     intro: "Abbottabad is one of the fastest-growing real estate markets in the Hazara region. MK Real Estate is a local property dealer helping clients buy and sell houses, residential plots, commercial shops and agricultural land in Abbottabad.",
-    areas: ["Abbottabad City", "Main Road Abbottabad", "Residential schemes Abbottabad"]
+    areas: ["Abbottabad City", "Main Road Abbottabad", "Residential schemes Abbottabad"],
+    faq: [
+      {q:"What types of property are available in Abbottabad?",a:"Houses, residential plots, commercial shops and agricultural land are available in Abbottabad."},
+      {q:"How can I contact a property dealer in Abbottabad?",a:"You can message MK Real Estate on WhatsApp or call Muhammad Ayan Khan at 0315-5881733 or Haider Ali Shah at 0313-5820606."},
+      {q:"Is Abbottabad good for real estate investment?",a:"Abbottabad is one of the fastest-growing real estate markets in the Hazara region with steady demand for residential and commercial property."}
+    ]
   },
   {
     key: "hazara",
@@ -195,7 +212,12 @@ const LOCATIONS = [
     description: "Real estate in Hazara, Pakistan. MK Real Estate — property dealers in Hazara offering land, houses and plots for sale across the Hazara region including Haripur and Mansehra.",
     keywords: ["real estate in Hazara Pakistan", "property dealers in Hazara", "land for sale in Hazara", "investment property in Hazara", "houses for sale in Hazara region", "property dealers in Haripur", "real estate in Mansehra"],
     intro: "The Hazara region of Khyber Pakhtunkhwa offers strong real estate opportunities — from residential plots in Abbottabad to agricultural land across Haripur and Mansehra. MK Real Estate operates across the region.",
-    areas: ["Hazara Region", "Haripur", "Mansehra", "Abbottabad"]
+    areas: ["Hazara Region", "Haripur", "Mansehra", "Abbottabad"],
+    faq: [
+      {q:"What types of property are available in Hazara?",a:"Residential plots, houses, commercial property and agricultural land are available across the Hazara region including Abbottabad, Haripur and Mansehra."},
+      {q:"How can I contact a property dealer in Hazara?",a:"You can message MK Real Estate on WhatsApp or call Muhammad Ayan Khan at 0315-5881733 or Haider Ali Shah at 0313-5820606."},
+      {q:"Is there agricultural land for sale in Hazara?",a:"Yes. MK Real Estate lists agricultural land across the Hazara region. Contact us for current availability."}
+    ]
   },
   {
     key: "haripur",
@@ -206,7 +228,12 @@ const LOCATIONS = [
     description: "Real estate in Haripur. MK Real Estate — property dealers offering plots, houses, commercial property and agricultural land for sale in Haripur, Hazara region.",
     keywords: ["property dealers in Haripur", "real estate in Haripur", "plots for sale in Haripur", "houses for sale in Haripur", "land for sale in Haripur", "commercial property Haripur", "property investment Haripur"],
     intro: "Haripur is a key market in the Hazara region. MK Real Estate helps buyers and sellers with plots, houses, shops and agricultural land in Haripur and surrounding areas.",
-    areas: ["Haripur City", "Khanpur", "Hazarduari"]
+    areas: ["Haripur City", "Khanpur", "Hazarduari"],
+    faq: [
+      {q:"What types of property are available in Haripur?",a:"Plots, houses, commercial property and agricultural land are available in Haripur and surrounding areas."},
+      {q:"How can I contact a property dealer in Haripur?",a:"You can message MK Real Estate on WhatsApp or call Muhammad Ayan Khan at 0315-5881733 or Haider Ali Shah at 0313-5820606."},
+      {q:"Are there plots for sale in Haripur?",a:"Yes. MK Real Estate lists residential plots in Haripur. Contact us for current availability."}
+    ]
   },
   {
     key: "mansehra",
@@ -217,7 +244,12 @@ const LOCATIONS = [
     description: "Real estate in Mansehra. MK Real Estate — property dealers offering plots, houses, commercial property and agricultural land for sale in Mansehra, Hazara region, Pakistan.",
     keywords: ["real estate in Mansehra", "property dealers in Mansehra", "plots for sale in Mansehra", "houses for sale in Mansehra", "land for sale in Mansehra", "commercial property Mansehra", "property investment Mansehra"],
     intro: "Mansehra is a growing city in the Hazara region with strong demand for residential plots, houses and commercial property. MK Real Estate serves buyers, sellers and investors across Mansehra.",
-    areas: ["Mansehra City", "Balakot Road", "Shinkiari"]
+    areas: ["Mansehra City", "Balakot Road", "Shinkiari"],
+    faq: [
+      {q:"What types of property are available in Mansehra?",a:"Residential plots, houses, commercial property and agricultural land are available in Mansehra and surrounding localities."},
+      {q:"How can I contact a property dealer in Mansehra?",a:"You can message MK Real Estate on WhatsApp or call Muhammad Ayan Khan at 0315-5881733 or Haider Ali Shah at 0313-5820606."},
+      {q:"Are there houses for sale in Mansehra?",a:"Yes. MK Real Estate lists houses in Mansehra. Contact us for current availability."}
+    ]
   }
 ];
 
@@ -507,6 +539,70 @@ const BLOG = [
       {q:"How do I contact MK Real Estate about investing?",a:"Message us on WhatsApp or call either owner directly. We will discuss your budget and shortlist suitable options."}
     ],
     related: ["property-investment-opportunities-abbottabad", "best-areas-buy-residential-plots-sultanpur"]
+  },
+  {
+    slug: "property-investment-haripur",
+    title: "Property Investment in Haripur: A Complete Guide",
+    image: IMAGE.blog11,
+    author: "Haider Ali Shah",
+    date: "2026-08-15",
+    updated: "2026-08-15",
+    excerpt: "Everything you need to know about investing in property in Haripur — plots, houses, commercial land and market trends.",
+    content: `<p>Haripur is a key city in the Hazara region with growing real estate activity. Whether you are looking for residential plots, commercial shops or agricultural land, Haripur offers opportunities for both end-users and investors.</p>
+<h2>Investment Options in Haripur</h2>
+<ul>
+<li><strong>Residential plots</strong> in established and developing housing schemes for long-term appreciation.</li>
+<li><strong>Houses</strong> for end-use or rental income in family neighbourhoods.</li>
+<li><strong>Commercial property</strong> on main roads with business footfall and rental yield potential.</li>
+<li><strong>Agricultural land</strong> on the outskirts of Haripur for farming or future development.</li>
+</ul>
+<h2>Why Invest in Haripur?</h2>
+<p>Haripur's location on the Grand Trunk Road, proximity to Havelian and Abbottabad, and ongoing development make it a practical choice for property investment. Land prices are generally more accessible than in Abbottabad, with strong rental demand from the local workforce.</p>
+<h2>Frequently Asked Questions</h2>
+<h3>Is Haripur good for property investment?</h3>
+<p>Haripur offers affordable entry points for first-time investors and steady demand for residential and commercial property. Returns depend on location, property type and holding period.</p>
+<h3>What types of property are available in Haripur?</h3>
+<p>Residential plots, houses, commercial shops and agricultural land are available across Haripur and nearby areas including Khanpur.</p>
+<h3>How can MK Real Estate help me invest in Haripur?</h3>
+<p>We shortlist verified options based on your budget, arrange site visits, support negotiation and guide you through documentation.</p>`,
+    faq: [
+      {q:"Is Haripur good for property investment?",a:"Haripur offers affordable entry points for first-time investors and steady demand for residential and commercial property. Returns depend on location, property type and holding period."},
+      {q:"What types of property are available in Haripur?",a:"Residential plots, houses, commercial shops and agricultural land are available across Haripur and nearby areas including Khanpur."},
+      {q:"How can MK Real Estate help me invest in Haripur?",a:"We shortlist verified options based on your budget, arrange site visits, support negotiation and guide you through documentation."}
+    ],
+    related: ["best-areas-buy-residential-plots-sultanpur", "beginners-guide-real-estate-investment-hazara"]
+  },
+  {
+    slug: "real-estate-opportunities-mansehra",
+    title: "Real Estate Opportunities in Mansehra: Complete Guide",
+    image: IMAGE.blog12,
+    author: "Muhammad Ayan Khan",
+    date: "2026-08-01",
+    updated: "2026-08-01",
+    excerpt: "A complete guide to buying and investing in property in Mansehra — plots, houses, land and market overview.",
+    content: `<p>Mansehra is a growing city in the Hazara region of Khyber Pakhtunkhwa. With steady demand for residential plots, houses and agricultural land, Mansehra offers real estate opportunities for buyers, sellers and investors.</p>
+<h2>Property Options in Mansehra</h2>
+<ul>
+<li><strong>Residential plots</strong> in Mansehra city and surrounding localities such as Shinkiari and Balakot Road.</li>
+<li><strong>Houses</strong> for families and end-users in established neighbourhoods.</li>
+<li><strong>Agricultural land</strong> on the outskirts for farming and long-term investment.</li>
+<li><strong>Commercial property</strong> along main roads with business potential.</li>
+</ul>
+<h2>Market Overview</h2>
+<p>Mansehra benefits from its position as a regional hub connecting Abbottabad, Balakot and the Kaghan Valley. Property prices are generally more affordable than in Abbottabad, making it attractive for first-time buyers and investors looking for growth potential.</p>
+<h2>Frequently Asked Questions</h2>
+<h3>Is Mansehra good for real estate investment?</h3>
+<p>Mansehra offers affordable property options with steady local demand. As a regional hub, it supports both residential and commercial real estate activity. Returns depend on location, property type and holding period.</p>
+<h3>What types of property are available in Mansehra?</h3>
+<p>Residential plots, houses, agricultural land and commercial property are available across Mansehra city and nearby areas.</p>
+<h3>How can MK Real Estate help me buy property in Mansehra?</h3>
+<p>We shortlist verified options based on your budget and preferred area, arrange site visits, support negotiation and guide you through documentation and registry.</p>`,
+    faq: [
+      {q:"Is Mansehra good for real estate investment?",a:"Mansehra offers affordable property options with steady local demand. As a regional hub, it supports both residential and commercial real estate activity. Returns depend on location, property type and holding period."},
+      {q:"What types of property are available in Mansehra?",a:"Residential plots, houses, agricultural land and commercial property are available across Mansehra city and nearby areas."},
+      {q:"How can MK Real Estate help me buy property in Mansehra?",a:"We shortlist verified options based on your budget and preferred area, arrange site visits, support negotiation and guide you through documentation and registry."}
+    ],
+    related: ["beginners-guide-real-estate-investment-hazara", "property-investment-opportunities-abbottabad"]
   }
 ];
 

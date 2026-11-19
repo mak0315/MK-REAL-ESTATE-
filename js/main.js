@@ -16,26 +16,26 @@
 
   /* ---------- Navigation ---------- */
   const nav = [
-    ["index.html", "Home", "home"],
-    ["properties.html", "Properties", "properties"],
+    ["/index.html", "Home", "home"],
+    ["/properties.html", "Properties", "properties"],
     ["#locations", "Locations", "locations"],
-    ["about.html", "About & Commission", "about"],
-    ["founders.html", "Our Team", "founders"],
-    ["contact.html", "Contact", "contact"],
-    ["blog/", "Blog", "blog"]
+    ["/about.html", "About & Commission", "about"],
+    ["/founders.html", "Our Team", "founders"],
+    ["/contact.html", "Contact", "contact"],
+    ["/blog/", "Blog", "blog"]
   ];
-  const locationLinks = LOCATIONS.map(l => `<li><a href="../${l.url}" class="${isLocationPage && findLocation(l.key) ? "active" : ""}">${l.name}</a></li>`).join("");
+  const locationLinks = LOCATIONS.map(l => `<li><a href="/${l.url}" class="${isLocationPage && findLocation(l.key) ? "active" : ""}">${l.name}</a></li>`).join("");
 
   const locationsDropdown = `
     <li class="has-dropdown">
       <button class="drop-btn" aria-expanded="false" aria-label="Locations">Locations <span class="arrow">▾</span></button>
       <ul class="drop-menu" id="dropLocations">
-        <li><a href="../property-dealer-havelian/">Property Dealer in Havelian</a></li>
-        <li><a href="../real-estate-sultanpur/">Real Estate in Sultanpur</a></li>
-        <li><a href="../property-dealer-abbottabad/">Property Dealer in Abbottabad</a></li>
-        <li><a href="../real-estate-hazara/">Real Estate in Hazara</a></li>
-        <li><a href="../real-estate-haripur/">Real Estate in Haripur</a></li>
-        <li><a href="../real-estate-mansehra/">Real Estate in Mansehra</a></li>
+        <li><a href="/property-dealer-havelian/">Property Dealer in Havelian</a></li>
+        <li><a href="/real-estate-sultanpur/">Real Estate in Sultanpur</a></li>
+        <li><a href="/property-dealer-abbottabad/">Property Dealer in Abbottabad</a></li>
+        <li><a href="/real-estate-hazara/">Real Estate in Hazara</a></li>
+        <li><a href="/real-estate-haripur/">Real Estate in Haripur</a></li>
+        <li><a href="/real-estate-mansehra/">Real Estate in Mansehra</a></li>
       </ul>
     </li>`;
 
@@ -113,20 +113,20 @@
       </div>
       <div><h4>Pages</h4><ul>
         ${nav.map(n => n[1] !== "Locations" ? `<li><a href="${n[0]}">${n[1]}</a></li>` : "").join("")}
-        <li><a href="../property-dealer-havelian/">Property Dealer in Havelian</a></li>
-        <li><a href="../real-estate-sultanpur/">Real Estate in Sultanpur</a></li>
-        <li><a href="../property-dealer-abbottabad/">Property Dealer in Abbottabad</a></li>
-        <li><a href="../real-estate-hazara/">Real Estate in Hazara</a></li>
-        <li><a href="../real-estate-haripur/">Real Estate in Haripur</a></li>
-        <li><a href="../real-estate-mansehra/">Real Estate in Mansehra</a></li>
+        <li><a href="/property-dealer-havelian/">Property Dealer in Havelian</a></li>
+        <li><a href="/real-estate-sultanpur/">Real Estate in Sultanpur</a></li>
+        <li><a href="/property-dealer-abbottabad/">Property Dealer in Abbottabad</a></li>
+        <li><a href="/real-estate-hazara/">Real Estate in Hazara</a></li>
+        <li><a href="/real-estate-haripur/">Real Estate in Haripur</a></li>
+        <li><a href="/real-estate-mansehra/">Real Estate in Mansehra</a></li>
       </ul></div>
       <div><h4>Property Types</h4><ul>
-        <li><a href="properties.html">Residential Plots</a></li>
-        <li><a href="properties.html">Houses</a></li>
-        <li><a href="properties.html">Commercial Properties</a></li>
-        <li><a href="properties.html">Agricultural Land</a></li>
-        <li><a href="properties.html">Shops & Buildings</a></li>
-        <li><a href="properties.html">Investment Properties</a></li>
+        <li><a href="/properties.html">Residential Plots</a></li>
+        <li><a href="/properties.html">Houses</a></li>
+        <li><a href="/properties.html">Commercial Properties</a></li>
+        <li><a href="/properties.html">Agricultural Land</a></li>
+        <li><a href="/properties.html">Shops & Buildings</a></li>
+        <li><a href="/properties.html">Investment Properties</a></li>
       </ul></div>
       <div><h4>Contact</h4><ul>
         ${OWNERS.map(o => `<li><span style="display:block">${o.name} · ${o.role}</span><a href="${waLink(o, DEFAULT_MSG)}" target="_blank" rel="noopener" style="color:var(--gold-2)">WhatsApp ${o.phone}</a> · <a href="tel:${o.tel}" style="color:var(--gold-2)">Call</a></li>`).join("")}
@@ -135,7 +135,7 @@
     </div>
     <div class="foot-bottom">
       <span>© ${new Date().getFullYear()} ${SITE.name}. All rights reserved.</span>
-      <span>Commission: ${SITE.commission.seller}% seller · ${SITE.commission.buyer}% buyer · <a href="about.html" style="color:var(--gold-2)">Terms</a></span>
+      <span>Commission: ${SITE.commission.seller}% seller · ${SITE.commission.buyer}% buyer · <a href="/about.html" style="color:var(--gold-2)">Terms</a></span>
     </div>
   </div></footer>
 
@@ -192,7 +192,7 @@
   function propCard(p) {
     const msg = `Hello ${SITE.short}, I'm interested in this property:\n${p.title} (${p.id})\nLocation: ${p.location}\nType: ${p.type}\nPurpose: ${p.purpose}\nSize: ${p.size}\nPrice: ${p.price}\nPlease share more details.`;
     const bg = p.image ? `style="background-image:url('${p.image}')"` : "";
-    const purl = "properties/" + p.slug + ".html";
+    const purl = "/properties/" + p.slug + ".html";
     return `
     <article class="property-card">
       <div class="card-media" ${bg}>
@@ -403,15 +403,7 @@ Message: ${f.msg.value || "-"}`);
   });
 
   /* ---------- FAQ accordion ---------- */
-  document.querySelectorAll(".faq-q").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const item = btn.closest(".faq-item");
-      const open = item.classList.toggle("open");
-      btn.setAttribute("aria-expanded", String(open));
-    });
-  });
-
-  /* ---------- Blog listing ---------- */
+/* ---------- Blog listing ---------- */
   const blogList = document.getElementById("blogList");
   if (blogList) {
     blogList.innerHTML = BLOG.map(b => `
@@ -527,7 +519,7 @@ Message: ${f.msg.value || "-"}`);
           <div class="section-head center"><span class="eyebrow">Active Areas</span><h2>Where We Work in ${encHTML(loc.name)}</h2></div>
           <div class="location-grid">
             ${loc.areas.map(a => `
-            <a class="location-tile" href="../properties.html?loc=${enc(a)}">
+            <a class="location-tile" href="/properties.html?loc=${enc(a)}">
               <div class="tile-media" style="background-image:url('${IMAGE.house}')"><img src="${IMAGE.house}" alt="${encHTML(a)} property" loading="lazy"></div>
               <div class="tile-body">
                 <span class="tile-eyebrow">Service Area</span>
@@ -545,6 +537,18 @@ Message: ${f.msg.value || "-"}`);
           <div class="grid g3" id="loc-list-${key}"></div>
         </div>
       </section>
+      <section style="background:#fff">
+        <div class="wrap">
+          <div class="section-head center"><span class="eyebrow">Frequently Asked Questions</span><h2>${encHTML(loc.name)} <em>FAQs</em></h2></div>
+          <div class="faq-grid">
+            ${loc.faq.map(f => `
+            <div class="faq-item">
+              <div class="faq-q" aria-expanded="false">${encHTML(f.q)}<span class="arrow">▾</span></div>
+              <div class="faq-a">${encHTML(f.a)}</div>
+            </div>`).join("")}
+          </div>
+        </div>
+      </section>
       <section class="dark">
         <div class="wrap" data-commission></div>
       </section>
@@ -553,7 +557,7 @@ Message: ${f.msg.value || "-"}`);
           <h2>Looking for Property in ${encHTML(loc.name)}?</h2>
           <p>Send us your requirement on WhatsApp and we'll shortlist verified options for you.</p>
           <button class="btn btn-solid" data-wa="Hello ${SITE.short}, I'm looking for property in ${loc.name}. Please help me find one.">💬 Message on WhatsApp</button>
-          <a class="btn btn-outline" style="border-color:#fff;color:#fff" href="../contact.html">Contact Us</a>
+          <a class="btn btn-outline" style="border-color:#fff;color:#fff" href="/contact.html">Contact Us</a>
         </div>
       </section>`;
       const locList = document.getElementById("loc-list-" + key);
@@ -571,6 +575,15 @@ Message: ${f.msg.value || "-"}`);
     if (!container) return;
     container.innerHTML = crumbs.map((c, i) => c.url ? `<a href="${c.url}">${c.label}</a><span class="sep">›</span>` : `<span>${c.label}</span>`).join("");
   }
+
+  /* ---------- FAQ accordion (runs after all content injected) ---------- */
+  document.querySelectorAll(".faq-q").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const item = btn.closest(".faq-item");
+      const open = item.classList.toggle("open");
+      btn.setAttribute("aria-expanded", String(open));
+    });
+  });
 })();
 
 /* HTML escape helper */
