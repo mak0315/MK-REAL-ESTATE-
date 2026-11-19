@@ -55,7 +55,9 @@
       <button class="burger" id="burger" aria-label="Menu">☰</button>
     </div>
   </div></header>`;
-  document.body.insertAdjacentHTML("afterbegin", header);
+  if (!document.querySelector(".site-header")) {
+    document.body.insertAdjacentHTML("afterbegin", header);
+  }
 
   /* ---------- JSON-LD structured data ---------- */
   function ld(obj) {
@@ -147,7 +149,9 @@
     <p>Choose who you'd like to talk to. Your message is already written for you.</p>
     <div id="waOwners"></div>
   </div></div>`;
-  document.body.insertAdjacentHTML("beforeend", footer);
+  if (!document.querySelector(".site-footer")) {
+    document.body.insertAdjacentHTML("beforeend", footer);
+  }
 
   /* ---------- WhatsApp chooser ---------- */
   const modal = document.getElementById("waModal");
