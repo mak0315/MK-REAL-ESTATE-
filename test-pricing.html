@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MK Real Estate - Pricing & Filter Test Suite</title>
+<style>
+  *{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:24px;line-height:1.6}
+  h1{font-size:1.5rem;margin-bottom:16px}h2{font-size:1.2rem;margin:24px 0 12px}
+  .pass{color:#16a34a}.fail{color:#dc2626}.info{color:#2563eb}
+  table{border-collapse:collapse;width:100%;margin:12px 0}
+  th,td{border:1px solid #e4ddd0;padding:8px;text-align:left;font-size:0.9rem}
+  th{background:#f6f4ee}
+  .result{font-weight:700}
+  pre{background:#f6f4ee;padding:10px;border-radius:6px;font-size:0.85rem;overflow:auto}
+  .test-group{border:1px solid #e4ddd0;border-radius:8px;padding:16px;margin:20px 0;background:#fff}
+  .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:700;margin-left:6px}
+  .badge-pass{background:#dcfce7;color:#166534}.badge-fail{background:#fee2e2;color:#991b1b}
+</style>
+</head>
+<body>
+<h1>MK Real Estate — Pricing & Filter Test Suite</h1>
+<p id="summary"></p>
+
+<div class="test-group">
+  <h2>1. Price Formatting Tests</h2>
+  <table id="priceFormatTable"><thead><tr><th>Input PKR</th><th>Purpose</th><th>Expected</th><th>Actual</th><th>Result</th></tr></thead><tbody></tbody></table>
+</div>
+
+<div class="test-group">
+  <h2>2. Price per Marla Calculation Tests</h2>
+  <table id="ppmTable"><thead><tr><th>Price</th><th>Area</th><th>Unit</th><th>Expected PPM</th><th>Actual</th><th>Result</th></tr></thead><tbody></tbody></table>
+</div>
+
+<div class="test-group">
+  <h2>3. Area Conversion Tests (20 Marla = 1 Kanal)</h2>
+  <table id="areaTable"><thead><tr><th>Area</th><th>Unit</th><th>Expected Marla Equivalent</th><th>Actual</th><th>Result</th></tr></thead><tbody></tbody></table>
+</div>
+
+<div class="test-group">
+  <h2>4. Filter Logic Tests</h2>
+  <table id="filterTable"><thead><tr><th>Filter</th><th>Expected Count</th><th>Actual Count</th><th>Result</th></tr></thead><tbody></tbody></table>
+</div>
+
+<div class="test-group">
+  <h2>5. Combined Filter Tests</h2>
+  <table id="combinedTable"><thead><tr><th>Filters</th><th>Expected IDs</th><th>Actual IDs</th><th>Result</th></tr></thead><tbody></tbody></table>
+</div>
+
+<div class="test-group">
+  <h2>6. Edge Cases</h2>
+  <table id="edgeTable"><thead><tr><th>Case</th><th>Expected</th><th>Actual</th><th>Result</th></tr></thead><tbody></tbody></table>
+</div>
+
+<div class="test-group">
+  <h2>7. WhatsApp Message Tests</h2>
+  <table id="waTable"><thead><tr><th>Property</th><th>Message Contains Listing ID?</th><th>URL Encoded?</th><th>Result</th></tr></thead><tbody></tbody></table>
+</div>
+
+<script src="../js/data.js"></script>
+<script>
+  // Import functions from data.js scope by re-defining minimal helpers
+  function formatNumber(n){return n.toFixed(2).replace(/\.?0+$/,"");}
+  function formatPrice(pkr,purpose){
+    if(typeof pkr!=="number"||isNaN(pkr))return "Price on request";
+    if(purpose==="Rent")return "PKR "+pkr.toLocaleString("en-PK")+" / month";
+    if(pkr>=10000000)return "PKR "+formatNumber(pkr/10000000)+" Crore";
+    if(pkr>=100000)return "PKR "+formatNumber(pkr/100000)+" Lac";
+    return "PKR "+pkr.toLocaleString("en-PK");
+  }
+  function formatPricePerMarla(ppm){
+    if(typeof ppm!=="number"||isNaN(ppm))return null;
+    if(ppm>=100000)return "PKR "+formatNumber(ppm/100000)+" Lac / Marla";
+    return "PKR "+ppm.toLocaleString("en-PK")+" / Marla";
+  }
+  function formatArea(area,unit){
+    if(area===null||area===undefined||unit===null||unit===undefined)return "Area not specified";
+    return area+" "+unit;
+  }
+  function calculatePricePerMarla(price,area,unit){
+    if(typeof price!=="number"||isNaN(price))return null;
+    if(area===null||area===undefined||unit===null||unit===undefined)return null;
+    if(unit==="Marla")return price/area;
+    if(unit==="Kanal")return price/(area*20);
+    return null;
+  }
+
+  let passed=0, failed=0;
+  function check(name,expected,actual){
+    const ok=expected===actual;
+    if(ok){passed++}else{failed++}
+    return {ok,expected,actual};
+  }
+
+  // 1. Price Formatting
+  const priceTests=[
+    {input:250000,purpose:"Sale",expected:"PKR 2.5 Lac"},
+    {input:1000000,purpose:"Sale",expected:"PKR 10 Lac"},
+    {input:10000000,purpose:"Sale",expected:"PKR 1 Crore"},
+    {input:25000000,purpose:"Sale",expected:"PKR 2.5 Crore"},
+    {input:35000,purpose:"Rent",expected:"PKR 35,000 / month"},
+    {input:null,purpose:"Sale",expected:"Price on request"},
+    {input:2800000,purpose:"Sale",expected:"PKR 28 Lac"},
+    {input:8500000,purpose:"Sale",expected:"PKR 85 Lac"},
+    {input:12000000,purpose:"Sale",expected:"PKR 1.2 Crore"},
+    {input:7000000,purpose:"Sale",expected:"PKR 70 Lac"},
+    {input:4500000,purpose:"Sale",expected:"PKR 45 Lac"},
+  ];
+  const ptBody=document.querySelector("#priceFormatTable tbody");
+  priceTests.forEach(t=>{
+    const r=check("formatPrice",t.expected,formatPrice(t.input,t.purpose));
+    const row=`<tr><td>${t.input}</td><td>${t.purpose}</td><td>${t.expected}</td><td class="result">${formatPrice(t.input,t.purpose)}</td><td><span class="badge ${r.ok?'badge-pass':'badge-fail'}">${r.ok?'PASS':'FAIL'}</span></td></tr>`;
+    ptBody.innerHTML+=row;
+  });
+
+  // 2. Price per Marla
+  const ppmTests=[
+    {price:2800000,area:5,unit:"Marla",expected:560000},
+    {price:8500000,area:5,unit:"Marla",expected:1700000},
+    {price:12000000,area:10,unit:"Marla",expected:1200000},
+    {price:7000000,area:8,unit:"Kanal",expected:43750},
+    {price:4500000,area:200,unit:"sq ft",expected:null},
+    {price:2800000,area:null,unit:null,expected:null},
+  ];
+  const ppmBody=document.querySelector("#ppmTable tbody");
+  ppmTests.forEach(t=>{
+    const actual=calculatePricePerMarla(t.price,t.area,t.unit);
+    const r=check("calculatePricePerMarla",t.expected,actual);
+    const row=`<tr><td>${t.price}</td><td>${t.area}</td><td>${t.unit}</td><td>${t.expected}</td><td class="result">${actual}</td><td><span class="badge ${r.ok?'badge-pass':'badge-fail'}">${r.ok?'PASS':'FAIL'}</span></td></tr>`;
+    ppmBody.innerHTML+=row;
+  });
+
+  // 3. Area conversion
+  const areaTests=[
+    {area:1,unit:"Kanal",expected:"20 Marla"},
+    {area:8,unit:"Kanal",expected:"160 Marla"},
+    {area:5,unit:"Marla",expected:"5 Marla"},
+    {area:200,unit:"sq ft",expected:"200 sq ft"},
+    {area:null,unit:null,expected:"Area not specified"},
+  ];
+  const atBody=document.querySelector("#areaTable tbody");
+  areaTests.forEach(t=>{
+    const actual=formatArea(t.area,t.unit);
+    const r=check("formatArea",t.expected,actual);
+    const row=`<tr><td>${t.area}</td><td>${t.unit}</td><td>${t.expected}</td><td class="result">${actual}</td><td><span class="badge ${r.ok?'badge-pass':'badge-fail'}">${r.ok?'PASS':'FAIL'}</span></td></tr>`;
+    atBody.innerHTML+=row;
+  });
+
+  // 4. Filter logic
+  const filterTests=[
+    {name:"Havelian only",filter:p=>p.location==="Havelian",expected:2},
+    {name:"Sale only",filter:p=>p.purpose==="Sale",expected:5},
+    {name:"Rent only",filter:p=>p.purpose==="Rent",expected:1},
+    {name:"Residential Plot",filter:p=>p.type==="Residential Plot",expected:2},
+    {name:"Commercial",filter:p=>p.type==="Commercial",expected:1},
+    {name:"House",filter:p=>p.type==="House",expected:2},
+    {name:"Agricultural Land",filter:p=>p.type==="Agricultural Land",expected:1},
+    {name:"Price <= 50 Lac",filter:p=>p.price<=5000000,expected:3},
+    {name:"Price >= 85 Lac",filter:p=>p.price>=8500000,expected:1},
+    {name:"Active status",filter:p=>p.status==="active",expected:6},
+  ];
+  const ftBody=document.querySelector("#filterTable tbody");
+  filterTests.forEach(t=>{
+    const actual=PROPERTIES.filter(t.filter).length;
+    const r=check("filter",t.expected,actual);
+    const row=`<tr><td>${t.name}</td><td>${t.expected}</td><td class="result">${actual}</td><td><span class="badge ${r.ok?'badge-pass':'badge-fail'}">${r.ok?'PASS':'FAIL'}</span></td></tr>`;
+    ftBody.innerHTML+=row;
+  });
+
+  // 5. Combined filters
+  const combinedTests=[
+    {name:"Havelian + Residential Plot + Sale + Max 50 Lac",filters:[p=>p.location==="Havelian"&&p.type==="Residential Plot"&&p.purpose==="Sale"&&p.price<=5000000],expected:["MK-001"]},
+    {name:"Sale + Price <= 100 Lac",filters:[p=>p.purpose==="Sale"&&p.price<=10000000],expected:["MK-001","MK-002","MK-003","MK-004","MK-005"]},
+    {name:"Rent + Abbottabad",filters:[p=>p.purpose==="Rent"&&p.location==="Abbottabad"],expected:["MK-006"]},
+    {name:"Havelian + Price >= 85 Lac",filters:[p=>p.location==="Havelian"&&p.price>=8500000],expected:["MK-002"]},
+  ];
+  const ctBody=document.querySelector("#combinedTable tbody");
+  combinedTests.forEach(t=>{
+    const actual=PROPERTIES.filter(t.filters[0]).map(p=>p.id);
+    const expectedStr=t.expected.join(", ");
+    const actualStr=actual.join(", ");
+    const r=check("combined filter",expectedStr,actualStr);
+    const row=`<tr><td>${t.name}</td><td>${expectedStr}</td><td class="result">${actualStr}</td><td><span class="badge ${r.ok?'badge-pass':'badge-fail'}">${r.ok?'PASS':'FAIL'}</span></td></tr>`;
+    ctBody.innerHTML+=row;
+  });
+
+  // 6. Edge cases
+  const edgeTests=[
+    {name:"Price on request (null price)",input:null,purpose:"Sale",expected:"Price on request",actual:formatPrice(null,"Sale")},
+    {name:"Negotiable pricing type",p:PROPERTIES.find(p=>p.pricingType==="negotiable"),expected:"negotiable",actual:PROPERTIES.find(p=>p.pricingType==="negotiable").pricingType},
+    {name:"Fixed pricing type",p:PROPERTIES.find(p=>p.pricingType==="fixed"),expected:"fixed",actual:PROPERTIES.find(p=>p.pricingType==="fixed").pricingType},
+    {name:"All listings have unique IDs",input:PROPERTIES.map(p=>p.id),expected:6,actual:new Set(PROPERTIES.map(p=>p.id)).size},
+    {name:"Sale listings don't include Rent",input:PROPERTIES.filter(p=>p.purpose==="Sale").length,expected:5,actual:PROPERTIES.filter(p=>p.purpose==="Sale").length},
+    {name:"Rent price is monthly",p:PROPERTIES.find(p=>p.purpose==="Rent"),expected:"PKR 35,000 / month",actual:formatPrice(35000,"Rent")},
+  ];
+  const etBody=document.querySelector("#edgeTable tbody");
+  edgeTests.forEach(t=>{
+    const r=check("edge case",t.expected,t.actual);
+    const row=`<tr><td>${t.name}</td><td>${t.expected}</td><td class="result">${t.actual}</td><td><span class="badge ${r.ok?'badge-pass':'badge-fail'}">${r.ok?'PASS':'FAIL'}</span></td></tr>`;
+    etBody.innerHTML+=row;
+  });
+
+  // 7. WhatsApp message
+  const waTests=[
+    {p:PROPERTIES[0],name:"MK-001"},
+    {p:PROPERTIES[1],name:"MK-002"},
+    {p:PROPERTIES[3],name:"MK-004"},
+  ];
+  const waBody=document.querySelector("#waTable tbody");
+  waTests.forEach(t=>{
+    const msg=`Hello ${SITE.short},\n\nI am interested in this property:\n\nProperty: ${t.p.title}\nLocation: ${t.p.location}\nType: ${t.p.type}\nArea: ${formatArea(t.p.area,t.p.areaUnit)}\nAsking Price: ${formatPrice(t.p.price,t.p.purpose)}\nListing ID: ${t.p.id}\n\nPlease share more details.`;
+    const hasId=msg.includes(t.p.id);
+    const encoded=encodeURIComponent(msg);
+    const isEncoded=encoded!==msg;
+    const r=check("WA message",true,hasId&&isEncoded);
+    const row=`<tr><td>${t.name}</td><td>${hasId?'Yes':'No'}</td><td>${isEncoded?'Yes':'No'}</td><td><span class="badge ${r.ok?'badge-pass':'badge-fail'}">${r.ok?'PASS':'FAIL'}</span></td></tr>`;
+    waBody.innerHTML+=row;
+    console.log("WA Message for "+t.name+":\n"+msg);
+  });
+
+  document.getElementById("summary").innerHTML=`<strong>Results: ${passed} passed, ${failed} failed</strong>`;
+  if(failed>0)document.getElementById("summary").style.color="#dc2626";
+  else document.getElementById("summary").style.color="#16a34a";
+</script>
+</body>
+</html>

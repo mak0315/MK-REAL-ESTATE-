@@ -78,79 +78,195 @@ const IMAGE = {
 /* LISTINGS
    type: "Residential Plot" | "House" | "Commercial" | "Agricultural Land" | "Shop" | "Building" | "Investment Property"
    purpose: "Sale" | "Rent"
-   All current entries are samples. Replace img with real property photos.
+   pricingType: "fixed" | "negotiable" | "onRequest"
+   status: "active" | "sold" | "rented" | "unavailable"
+   areaUnit: "Marla" | "Kanal" | "sq ft" | null
+   All prices stored as numerical PKR values. Never as formatted strings.
+   All current entries are samples. Replace with real, verified properties.
 */
 const PROPERTIES = [
   {
-    id: "MK-001", slug: "mk-001-5-marla-corner-plot", title: "5 Marla Corner Plot",
-    type: "Residential Plot", purpose: "Sale", location: "Havelian",
-    price: "PKR 28 Lac", priceNum: 2800000, size: "5 Marla",
-    beds: null, baths: null,
+    id: "MK-001",
+    slug: "mk-001-5-marla-corner-plot",
+    title: "5 Marla Corner Plot",
+    type: "Residential Plot",
+    purpose: "Sale",
+    location: "Havelian",
+    price: 2800000,
+    pricingType: "fixed",
+    area: 5,
+    areaUnit: "Marla",
+    pricePerMarla: 560000,
+    bedrooms: null,
+    bathrooms: null,
     tags: ["Corner Plot", "Registry Available", "Main Road"],
     description: "A 5 Marla residential corner plot in a developed housing scheme of Havelian. Corner location with easy access from two sides. Suitable for house construction or investment. Registry documents available.",
-    image: IMAGE.plot,
-    amenities: ["Electricity", "Gas", "Water Supply", "Paved Road"],
-    sample: true
+    photographs: [IMAGE.plot],
+    status: "active",
+    dateAdded: "2026-11-01",
+    sample: true,
+    amenities: ["Electricity", "Gas", "Water Supply", "Paved Road"]
   },
   {
-    id: "MK-002", slug: "mk-002-5-marla-double-storey-house", title: "5 Marla Double Storey House",
-    type: "House", purpose: "Sale", location: "Havelian",
-    price: "PKR 85 Lac", priceNum: 8500000, size: "5 Marla",
-    beds: 4, baths: 3,
+    id: "MK-002",
+    slug: "mk-002-5-marla-double-storey-house",
+    title: "5 Marla Double Storey House",
+    type: "House",
+    purpose: "Sale",
+    location: "Havelian",
+    price: 8500000,
+    pricingType: "negotiable",
+    area: 5,
+    areaUnit: "Marla",
+    pricePerMarla: 1700000,
+    bedrooms: 4,
+    bathrooms: 3,
     tags: ["4 Beds", "3 Baths", "Double Storey"],
     description: "A well-maintained 5 Marla double-storey house in Havelian with 4 bedrooms and 3 bathrooms. Family-friendly neighbourhood close to markets and schools.",
-    image: IMAGE.house,
-    amenities: ["4 Bedrooms", "3 Bathrooms", "Kitchen", "Drawing Room", "Parking"],
-    sample: true
+    photographs: [IMAGE.house],
+    status: "active",
+    dateAdded: "2026-11-02",
+    sample: true,
+    amenities: ["4 Bedrooms", "3 Bathrooms", "Kitchen", "Drawing Room", "Parking"]
   },
   {
-    id: "MK-003", slug: "mk-003-shop-main-bazar-sultanpur", title: "Shop on Main Bazar Road",
-    type: "Commercial", purpose: "Sale", location: "Sultanpur",
-    price: "PKR 45 Lac", priceNum: 4500000, size: "200 sq ft",
-    beds: null, baths: null,
+    id: "MK-003",
+    slug: "mk-003-shop-main-bazar-sultanpur",
+    title: "Shop on Main Bazar Road",
+    type: "Commercial",
+    purpose: "Sale",
+    location: "Sultanpur",
+    price: 4500000,
+    pricingType: "fixed",
+    area: 200,
+    areaUnit: "sq ft",
+    pricePerMarla: null,
+    bedrooms: null,
+    bathrooms: null,
     tags: ["200 sq ft", "Ground Floor", "Road Facing"],
     description: "Ground-floor shop on Main Bazar Road, Sultanpur. Road-facing with high footfall. Ideal for retail or commercial business use.",
-    image: IMAGE.commercial,
-    amenities: ["Road Facing", "Electricity", "Water Supply"],
-    sample: true
+    photographs: [IMAGE.commercial],
+    status: "active",
+    dateAdded: "2026-11-03",
+    sample: true,
+    amenities: ["Road Facing", "Electricity", "Water Supply"]
   },
   {
-    id: "MK-004", slug: "mk-004-10-marla-residential-plot-abbottabad", title: "10 Marla Residential Plot",
-    type: "Residential Plot", purpose: "Sale", location: "Abbottabad",
-    price: "PKR 1.2 Crore", priceNum: 12000000, size: "10 Marla",
-    beds: null, baths: null,
+    id: "MK-004",
+    slug: "mk-004-10-marla-residential-plot-abbottabad",
+    title: "10 Marla Residential Plot",
+    type: "Residential Plot",
+    purpose: "Sale",
+    location: "Abbottabad",
+    price: 12000000,
+    pricingType: "negotiable",
+    area: 10,
+    areaUnit: "Marla",
+    pricePerMarla: 1200000,
+    bedrooms: null,
+    bathrooms: null,
     tags: ["10 Marla", "Main Road", "Ready to Build"],
     description: "A 10 Marla residential plot in Abbottabad on the main road, ready for construction. Strong investment potential in a growing residential zone.",
-    image: IMAGE.plot,
-    amenities: ["Main Road Access", "Electricity", "Water Supply", "Boundary Wall"],
-    sample: true
+    photographs: [IMAGE.plot],
+    status: "active",
+    dateAdded: "2026-11-04",
+    sample: true,
+    amenities: ["Main Road Access", "Electricity", "Water Supply", "Boundary Wall"]
   },
   {
-    id: "MK-005", slug: "mk-005-8-kanal-agricultural-land-hazara", title: "8 Kanal Agricultural Land",
-    type: "Agricultural Land", purpose: "Sale", location: "Hazara Region",
-    price: "PKR 70 Lac", priceNum: 7000000, size: "8 Kanal",
-    beds: null, baths: null,
+    id: "MK-005",
+    slug: "mk-005-8-kanal-agricultural-land-hazara",
+    title: "8 Kanal Agricultural Land",
+    type: "Agricultural Land",
+    purpose: "Sale",
+    location: "Hazara Region",
+    price: 7000000,
+    pricingType: "fixed",
+    area: 8,
+    areaUnit: "Kanal",
+    pricePerMarla: 43750,
+    bedrooms: null,
+    bathrooms: null,
     tags: ["8 Kanal", "Water Available", "Fertile"],
     description: "8 Kanal of fertile agricultural land in the Hazara region with water availability. Suitable for farming or long-term land investment.",
-    image: IMAGE.agricultural,
-    amenities: ["Water Available", "Fertile Soil", "Access Road"],
-    sample: true
+    photographs: [IMAGE.agricultural],
+    status: "active",
+    dateAdded: "2026-11-05",
+    sample: true,
+    amenities: ["Water Available", "Fertile Soil", "Access Road"]
   },
   {
-    id: "MK-006", slug: "mk-006-3-bed-upper-portion-abbottabad", title: "3 Bed Upper Portion",
-    type: "House", purpose: "Rent", location: "Abbottabad",
-    price: "PKR 35,000 / month", priceNum: 35000, size: "Upper Portion",
-    beds: 3, baths: 2,
+    id: "MK-006",
+    slug: "mk-006-3-bed-upper-portion-abbottabad",
+    title: "3 Bed Upper Portion",
+    type: "House",
+    purpose: "Rent",
+    location: "Abbottabad",
+    price: 35000,
+    pricingType: "fixed",
+    area: null,
+    areaUnit: null,
+    pricePerMarla: null,
+    bedrooms: 3,
+    bathrooms: 2,
     tags: ["3 Beds", "2 Baths", "Family Area"],
     description: "A 3-bedroom upper portion on rent in Abbottabad, located in a family area with 2 bathrooms. Suitable for a small family.",
-    image: IMAGE.apartment,
-    amenities: ["3 Bedrooms", "2 Bathrooms", "Kitchen", "Family Area"],
-    sample: true
+    photographs: [IMAGE.apartment],
+    status: "active",
+    dateAdded: "2026-11-06",
+    sample: true,
+    amenities: ["3 Bedrooms", "2 Bathrooms", "Kitchen", "Family Area"]
   }
 ];
 
 function findProperty(idOrSlug){
   return PROPERTIES.find(p => p.id === idOrSlug || p.slug === idOrSlug);
+}
+
+/* ---------- Price formatting (Pakistani convention) ---------- */
+// 1 Lac = 100,000 PKR
+// 1 Crore = 10,000,000 PKR
+function formatNumber(n){
+  return n.toFixed(2).replace(/\.?0+$/, "");
+}
+
+function formatPrice(pkr, purpose){
+  if (typeof pkr !== "number" || isNaN(pkr)) return "Price on request";
+  if (purpose === "Rent") {
+    return "PKR " + pkr.toLocaleString("en-PK") + " / month";
+  }
+  if (pkr >= 10000000) {
+    return "PKR " + formatNumber(pkr / 10000000) + " Crore";
+  }
+  if (pkr >= 100000) {
+    return "PKR " + formatNumber(pkr / 100000) + " Lac";
+  }
+  return "PKR " + pkr.toLocaleString("en-PK");
+}
+
+function formatPricePerMarla(pricePerMarla){
+  if (typeof pricePerMarla !== "number" || isNaN(pricePerMarla)) return null;
+  if (pricePerMarla >= 100000) {
+    return "PKR " + formatNumber(pricePerMarla / 100000) + " Lac / Marla";
+  }
+  return "PKR " + pricePerMarla.toLocaleString("en-PK") + " / Marla";
+}
+
+function formatArea(area, unit){
+  if (area === null || area === undefined || unit === null || unit === undefined) return "Area not specified";
+  return area + " " + unit;
+}
+
+function calculatePricePerMarla(price, area, unit){
+  if (typeof price !== "number" || isNaN(price)) return null;
+  if (area === null || area === undefined || unit === null || unit === undefined) return null;
+  if (unit === "Marla") {
+    return price / area;
+  }
+  if (unit === "Kanal") {
+    return price / (area * 20);
+  }
+  return null;
 }
 
 /* LOCATIONS — dedicated local SEO landing pages */

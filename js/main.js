@@ -194,22 +194,27 @@
 
   /* ---------- Property card ---------- */
   function propCard(p) {
-    const msg = `Hello ${SITE.short}, I'm interested in this property:\n${p.title} (${p.id})\nLocation: ${p.location}\nType: ${p.type}\nPurpose: ${p.purpose}\nSize: ${p.size}\nPrice: ${p.price}\nPlease share more details.`;
-    const bg = p.image ? `style="background-image:url('${p.image}')"` : "";
+    const msg = `Hello ${SITE.short},\n\nI am interested in this property:\n\nProperty: ${p.title}\nLocation: ${p.location}\nType: ${p.type}\nArea: ${formatArea(p.area, p.areaUnit)}\nAsking Price: ${formatPrice(p.price, p.purpose)}\nListing ID: ${p.id}\n\nPlease share more details.`;
     const purl = "/properties/" + p.slug + ".html";
+    const statusBadge = p.status !== "active" ? `<span class="badge status-${p.status}">${p.status.charAt(0).toUpperCase() + p.status.slice(1)}</span>` : "";
+    const pricePerMarlaHtml = p.pricePerMarla ? `<div class="price-per-marla">${formatPricePerMarla(p.pricePerMarla)}</div>` : "";
+    const pricingTypeHtml = p.pricingType === "negotiable" ? `<span class="pricing-negotiable">Negotiable</span>` : p.pricingType === "onRequest" ? `<span class="pricing-onrequest">Price on request</span>` : "";
     return `
     <article class="property-card">
-      <div class="card-media" ${bg}>
-        ${p.image ? '<img src="' + p.image + '" alt="' + enc(p.title) + ' in ' + enc(p.location) + '" loading="lazy">' : ""}
-        <span class="badge">${enc(p.type)}</span>
+      <div class="card-media">
+        <img src="${p.photographs[0]}" alt="${encHTML(p.title)} in ${encHTML(p.location)}" loading="lazy">
+        <span class="badge">${encHTML(p.type)}</span>
         ${p.sample ? '<span class="badge sample">Sample</span>' : ""}
-        <span class="sale-tag">For ${enc(p.purpose)}</span>
+        ${statusBadge}
+        <span class="sale-tag">For ${encHTML(p.purpose)}</span>
       </div>
       <div class="card-body">
-        <h3><a href="${purl}">${enc(p.title)}</a></h3>
-        <div class="prop-loc">📍 ${enc(p.location)} · ${enc(p.purpose)}</div>
-        <div class="tags">${p.tags.map(t => `<span>${enc(t)}</span>`).join("")}</div>
-        <div class="price">${enc(p.price)}</div>
+        <h3><a href="${purl}">${encHTML(p.title)}</a></h3>
+        <div class="prop-loc">📍 ${encHTML(p.location)} · ${encHTML(p.purpose)}</div>
+        <div class="tags">${p.tags.map(t => `<span>${encHTML(t)}</span>`).join("")}</div>
+        ${pricingTypeHtml}
+        <div class="price">${formatPrice(p.price, p.purpose)}</div>
+        ${pricePerMarlaHtml}
         <div class="card-foot">
           <a href="${purl}" class="btn btn-ghost btn-sm">View Details</a>
           <button class="btn btn-wa btn-sm" data-wa="${msg.replace(/"/g, "&quot;")}">💬 WhatsApp</button>
@@ -234,6 +239,10 @@
   const fLoc = document.getElementById("fLoc");
   const fType = document.getElementById("fType");
   const fPurpose = document.getElementById("fPurpose");
+  const fMin = document.getElementById("fMin");
+  const fMax = document.getElementById("fMax");
+  const fSort = document.getElementById("fSort");
+  const btnReset = document.getElementById("btnResetFilters");
   if (list && fLoc && fType && fPurpose) {
     const locs = [...new Set(PROPERTIES.map(p => p.location))];
     fLoc.innerHTML = '<option value="">All locations</option>' + locs.map(l => `<option>${encHTML(l)}</option>`).join("");
@@ -243,15 +252,30 @@
     if (q.get("loc")) fLoc.value = q.get("loc");
     if (q.get("type")) fType.value = q.get("type");
     if (q.get("purpose")) fPurpose.value = q.get("purpose");
+    if (q.get("min")) fMin.value = q.get("min");
+    if (q.get("max")) fMax.value = q.get("max");
+    if (q.get("sort")) fSort.value = q.get("sort");
     const render = () => {
       const res = PROPERTIES.filter(p =>
         (!fLoc.value || p.location === fLoc.value) &&
         (!fType.value || p.type === fType.value) &&
-        (!fPurpose.value || p.purpose === fPurpose.value));
-      list.innerHTML = res.length ? res.map(propCard).join("")
+        (!fPurpose.value || p.purpose === fPurpose.value) &&
+        (!fMin.value || p.price >= parseFloat(fMin.value)) &&
+        (!fMax.value || p.price <= parseFloat(fMax.value))
+      );
+      const sorted = [...res].sort((a, b) => {
+        if (fSort.value === "price-asc") return a.price - b.price;
+        if (fSort.value === "price-desc") return b.price - a.price;
+        return 0;
+      });
+      list.innerHTML = sorted.length ? sorted.map(propCard).join("")
         : `<div class="empty-state"><p>No listing matches your filters yet.</p><p class="lead" style="margin-top:8px">Send us your requirement on WhatsApp and we'll find matching options for you.</p><button class="btn btn-wa" data-wa="Hello ${SITE.short}, I'm looking for a property. Please help me find one.">💬 Tell Us What You Need</button></div>`;
     };
-    [fLoc, fType, fPurpose].forEach(f => f.addEventListener("change", render));
+    [fLoc, fType, fPurpose, fMin, fMax, fSort].forEach(f => f.addEventListener("change", render));
+    if (btnReset) btnReset.addEventListener("click", () => {
+      fLoc.value = ""; fType.value = ""; fPurpose.value = ""; fMin.value = ""; fMax.value = ""; fSort.value = "";
+      render();
+    });
     render();
   }
 
@@ -263,50 +287,62 @@
     if (!p) {
       propDetail.innerHTML = `<div class="empty-state"><p>Property not found.</p><a href="../properties.html" class="btn btn-solid">Browse All Properties</a></div>`;
     } else {
-      const msg = `Hello ${SITE.short}, I'm interested in this property:\n${p.title} (${p.id})\nLocation: ${p.location}\nType: ${p.type}\nPurpose: ${p.purpose}\nSize: ${p.size}\nPrice: ${p.price}\nPlease share more details and arrange a site visit.`;
-      const bedsHtml = p.beds ? `<div class="spec"><span class="spec-val">${p.beds}</span><span class="spec-lab">Bedrooms</span></div>` : "";
-      const bathsHtml = p.baths ? `<div class="spec"><span class="spec-val">${p.baths}</span><span class="spec-lab">Bathrooms</span></div>` : "";
-      const sizeHtml = `<div class="spec"><span class="spec-val">${p.size}</span><span class="spec-lab">Size</span></div>`;
+      const waMsg = `Hello ${SITE.short},\n\nI am interested in this property:\n\nProperty: ${p.title}\nLocation: ${p.location}\nType: ${p.type}\nArea: ${formatArea(p.area, p.areaUnit)}\nAsking Price: ${formatPrice(p.price, p.purpose)}\nListing ID: ${p.id}\n\nPlease share more details and arrange a site visit.`;
+      const bedsHtml = p.bedrooms ? `<div class="spec"><span class="spec-val">${p.bedrooms}</span><span class="spec-lab">Bedrooms</span></div>` : "";
+      const bathsHtml = p.bathrooms ? `<div class="spec"><span class="spec-val">${p.bathrooms}</span><span class="spec-lab">Bathrooms</span></div>` : "";
+      const areaHtml = p.area !== null ? `<div class="spec"><span class="spec-val">${formatArea(p.area, p.areaUnit)}</span><span class="spec-lab">Area</span></div>` : "";
       const purposeHtml = `<div class="spec"><span class="spec-val">${p.purpose}</span><span class="spec-lab">Purpose</span></div>`;
+      const pricingTypeHtml = p.pricingType === "negotiable" ? `<div class="spec"><span class="spec-val">Negotiable</span><span class="spec-lab">Pricing Type</span></div>` : p.pricingType === "onRequest" ? `<div class="spec"><span class="spec-val">Price on request</span><span class="spec-lab">Pricing Type</span></div>` : "";
+      const statusHtml = p.status !== "active" ? `<div class="spec"><span class="spec-val">${p.status.charAt(0).toUpperCase() + p.status.slice(1)}</span><span class="spec-lab">Status</span></div>` : "";
+      const pricePerMarlaHtml = p.pricePerMarla ? `<div class="spec"><span class="spec-val">${formatPricePerMarla(p.pricePerMarla)}</span><span class="spec-lab">Price per Marla</span></div>` : "";
+      const galleryHtml = p.photographs.map((img, i) => `
+        <div class="thumb${i === 0 ? " active" : ""}" onclick="document.getElementById('mainImg').src='${img}'">
+          <img src="${img}" alt="${encHTML(p.title)} thumbnail ${i + 1}" loading="lazy">
+        </div>`).join("");
       propDetail.innerHTML = `
       <section class="property-hero">
-        <div class="gallery" style="background-image:url('${p.image}')">
-          <img src="${p.image}" alt="${enc(p.title)} ${p.location} ${p.type}" loading="eager">
-          <span class="badge">${enc(p.type)}</span>
-          <span class="sale-tag">For ${enc(p.purpose)}</span>
+        <div class="gallery" id="mainGallery">
+          <img id="mainImg" src="${p.photographs[0]}" alt="${encHTML(p.title)} ${p.location} ${p.type}" loading="eager">
+          <span class="badge">${encHTML(p.type)}</span>
+          <span class="sale-tag">For ${encHTML(p.purpose)}</span>
           ${p.sample ? '<span class="badge sample">Sample</span>' : ""}
+          ${p.status !== "active" ? `<span class="badge status-${p.status}">${p.status.charAt(0).toUpperCase() + p.status.slice(1)}</span>` : ""}
+        </div>
+        <div class="gallery-thumbs">
+          ${galleryHtml}
         </div>
       </section>
       <div class="property-detail">
         <div>
-          <h1>${enc(p.title)}</h1>
-          <div class="prop-meta">${sizeHtml}${bedsHtml}${bathsHtml}${purposeHtml}</div>
-          <p class="lead">${enc(p.description)}</p>
+          <h1>${encHTML(p.title)}</h1>
+          <div class="prop-meta">${areaHtml}${bedsHtml}${bathsHtml}${purposeHtml}${pricingTypeHtml}${statusHtml}</div>
+          <p class="lead">${encHTML(p.description)}</p>
           <div class="price-block">
-            <span class="price-big">${enc(p.price)}</span>
-            <span class="price-note">Asking price · ${p.purpose.toLowerCase()} · ${enc(p.location)}</span>
+            <span class="price-big">${formatPrice(p.price, p.purpose)}</span>
+            <span class="price-note">Asking price · ${p.purpose.toLowerCase()} · ${encHTML(p.location)}</span>
           </div>
+          ${p.pricePerMarla ? `<div class="price-per-marla-detail">${formatPricePerMarla(p.pricePerMarla)}</div>` : ""}
           <h3>Amenities</h3>
-          <div class="amenities">${p.amenities.map(a => `<span class="amenity">${enc(a)}</span>`).join("")}</div>
+          <div class="amenities">${p.amenities.map(a => `<span class="amenity">${encHTML(a)}</span>`).join("")}</div>
           <div class="actions">
-            <a class="btn btn-wa" target="_blank" rel="noopener" href="${waLink(OWNERS[0], msg)}">💬 Inquire on WhatsApp</a>
+            <a class="btn btn-wa" target="_blank" rel="noopener" href="${waLink(OWNERS[0], waMsg)}">💬 Inquire on WhatsApp</a>
             <a class="btn btn-solid" href="tel:${OWNERS[0].tel}">📞 Call ${OWNERS[0].phone}</a>
           </div>
         </div>
         <aside>
           <h3>Asking Price</h3>
           <div class="price-block">
-            <span class="price-big">${enc(p.price)}</span>
-            <span class="price-note">${enc(p.location)} · ${enc(p.type)}</span>
+            <span class="price-big">${formatPrice(p.price, p.purpose)}</span>
+            <span class="price-note">${encHTML(p.location)} · ${encHTML(p.type)}</span>
           </div>
           <h3>Property Specifications</h3>
-          <div class="specs-grid">${sizeHtml}${bedsHtml}${bathsHtml}${purposeHtml}</div>
+          <div class="specs-grid">${areaHtml}${bedsHtml}${bathsHtml}${purposeHtml}${pricingTypeHtml}${statusHtml}${pricePerMarlaHtml}</div>
           <h3>Location</h3>
-          <p>${enc(p.location)}, ${SITE.region}</p>
+          <p>${encHTML(p.location)}, ${SITE.region}</p>
           <h3>Agent</h3>
           <p>${OWNERS[0].name} · ${OWNERS[0].role}</p>
           <div class="actions" style="margin-bottom:0">
-            <a class="btn btn-wa" target="_blank" rel="noopener" href="${waLink(OWNERS[0], msg)}">💬 WhatsApp ${OWNERS[0].phone}</a>
+            <a class="btn btn-wa" target="_blank" rel="noopener" href="${waLink(OWNERS[0], waMsg)}">💬 WhatsApp ${OWNERS[0].phone}</a>
             <a class="btn btn-solid" href="tel:${OWNERS[0].tel}">📞 Call ${OWNERS[0].phone}</a>
           </div>
           <h3>Related Properties</h3>
@@ -321,23 +357,26 @@
         "@id": SITE.url + "/properties/" + p.slug + ".html#product",
         name: p.title,
         description: p.description,
-        image: p.image,
+        image: p.photographs[0],
         url: SITE.url + "/properties/" + p.slug + ".html",
         brand: { "@type": "Brand", name: SITE.name },
         offers: {
           "@type": "Offer",
-          price: String(p.priceNum),
+          price: String(p.price),
           priceCurrency: "PKR",
-          availability: "https://schema.org/InStock",
+          availability: p.status === "active" ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
           itemCondition: "https://schema.org/UsedCondition",
           seller: { "@type": "RealEstateAgent", name: SITE.name }
         },
         category: p.type,
         additionalProperty: [
           { name: "Purpose", value: p.purpose },
-          { name: "Size", value: p.size },
-          p.beds ? { name: "Bedrooms", value: String(p.beds) } : null,
-          p.baths ? { name: "Bathrooms", value: String(p.baths) } : null
+          p.area !== null ? { name: "Size", value: formatArea(p.area, p.areaUnit) } : null,
+          p.pricePerMarla ? { name: "Price per Marla", value: formatPricePerMarla(p.pricePerMarla) } : null,
+          p.bedrooms ? { name: "Bedrooms", value: String(p.bedrooms) } : null,
+          p.bathrooms ? { name: "Bathrooms", value: String(p.bathrooms) } : null,
+          { name: "Pricing Type", value: p.pricingType.charAt(0).toUpperCase() + p.pricingType.slice(1) },
+          { name: "Status", value: p.status.charAt(0).toUpperCase() + p.status.slice(1) }
         ].filter(Boolean),
         address: {
           "@type": "Place",

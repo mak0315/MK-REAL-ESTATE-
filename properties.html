@@ -38,6 +38,10 @@
       <div class="field"><label>Location</label><select id="fLoc"></select></div>
       <div class="field"><label>Type</label><select id="fType"><option value="">All types</option><option>Residential Plot</option><option>House</option><option>Commercial</option><option>Agricultural Land</option></select></div>
       <div class="field"><label>Purpose</label><select id="fPurpose"><option value="">Sale &amp; Rent</option><option>Sale</option><option>Rent</option></select></div>
+      <div class="field"><label>Min Price (PKR)</label><input id="fMin" type="number" min="0" step="100000" placeholder="e.g. 1000000"></div>
+      <div class="field"><label>Max Price (PKR)</label><input id="fMax" type="number" min="0" step="100000" placeholder="e.g. 5000000"></div>
+      <div class="field"><label>Sort</label><select id="fSort"><option value="">Default</option><option value="price-asc">Price: Low to High</option><option value="price-desc">Price: High to Low</option></select></div>
+      <button id="btnResetFilters" class="btn btn-ghost btn-sm">Reset</button>
     </div>
     <div class="grid g3" id="propList"></div>
   </div>
