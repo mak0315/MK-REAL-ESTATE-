@@ -40,7 +40,7 @@ collections:
       - { name: "tags", label: "Tags", widget: "list" }
       - { name: "coverImage", label: "Cover Image", widget: "image", required: true }
       - { name: "photographs", label: "Additional Photographs", widget: "list",
-          field: { widget: "image" } }
+          field: { name: "image", label: "Image", widget: "image" } }
       - { name: "featured", label: "Featured Property", widget: "boolean", default: false }
       - { name: "status", label: "Availability Status", widget: "select",
           options: ["active", "sold", "rented", "unavailable"], default: "active" }
