@@ -15,7 +15,7 @@ const SITE = {
   phoneLocal: "0315-5881733",
   phone2: "+92 313 5820606",
   phone2Local: "0313-5820606",
-  email: "info@mkrealestate.example",
+  email: "ah5909931@gmail.com",
   // Commission (percent of the deal value). Agreed before each transaction.
   commission: { seller: 2.5, buyer: 1.5 },
   // Primary service areas (SEO priority)
