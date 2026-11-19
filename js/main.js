@@ -1,4 +1,4 @@
-(function () {
+(async function () {
   "use strict";
 
   const page = document.body.dataset.page || "";
@@ -13,6 +13,26 @@
   const isPropertyPage = !!document.getElementById("property-detail");
   const isBlogPage = !!document.getElementById("blog-article");
   const isLocationPage = !!document.getElementById("location-page");
+
+  /* ---------- Fetch properties from CMS data ---------- */
+  let properties = [];
+  try {
+    const res = await fetch("/api/properties", { cache: "no-store" });
+    if (res.ok) properties = await res.json();
+  } catch (e) {
+    /* fall back to static JSON file */
+    try {
+      const res2 = await fetch("data/properties.json");
+      if (res2.ok) properties = await res2.json();
+    } catch (e2) {
+      /* fall back to empty array */
+    }
+  }
+  window.PROPERTIES = properties;
+
+  function findPropertyLocal(idOrSlug) {
+    return properties.find(p => p.id === idOrSlug || p.slug === idOrSlug);
+  }
 
   /* ---------- Navigation ---------- */
   const nav = [
@@ -202,7 +222,7 @@
     return `
     <article class="property-card">
       <div class="card-media">
-        <img src="${p.photographs[0]}" alt="${encHTML(p.title)} in ${encHTML(p.location)}" loading="lazy">
+        <img src="${p.coverImage}" alt="${encHTML(p.title)} in ${encHTML(p.location)}" loading="lazy">
         <span class="badge">${encHTML(p.type)}</span>
         ${p.sample ? '<span class="badge sample">Sample</span>' : ""}
         ${statusBadge}
@@ -225,7 +245,7 @@
 
   /* ---------- Homepage featured + search ---------- */
   const featured = document.getElementById("featured");
-  if (featured) featured.innerHTML = PROPERTIES.slice(0, 4).map(propCard).join("");
+  if (featured) featured.innerHTML = properties.slice(0, 4).map(propCard).join("");
 
   const search = document.getElementById("searchForm");
   if (search) search.addEventListener("submit", e => {
@@ -244,9 +264,9 @@
   const fSort = document.getElementById("fSort");
   const btnReset = document.getElementById("btnResetFilters");
   if (list && fLoc && fType && fPurpose) {
-    const locs = [...new Set(PROPERTIES.map(p => p.location))];
+    const locs = [...new Set(properties.map(p => p.location))];
     fLoc.innerHTML = '<option value="">All locations</option>' + locs.map(l => `<option>${encHTML(l)}</option>`).join("");
-    const types = [...new Set(PROPERTIES.map(p => p.type))];
+    const types = [...new Set(properties.map(p => p.type))];
     fType.innerHTML = '<option value="">All types</option>' + types.map(t => `<option>${encHTML(t)}</option>`).join("");
     const q = new URLSearchParams(location.search);
     if (q.get("loc")) fLoc.value = q.get("loc");
@@ -256,7 +276,7 @@
     if (q.get("max")) fMax.value = q.get("max");
     if (q.get("sort")) fSort.value = q.get("sort");
     const render = () => {
-      const res = PROPERTIES.filter(p =>
+      const res = properties.filter(p =>
         (!fLoc.value || p.location === fLoc.value) &&
         (!fType.value || p.type === fType.value) &&
         (!fPurpose.value || p.purpose === fPurpose.value) &&
@@ -269,7 +289,7 @@
         return 0;
       });
       list.innerHTML = sorted.length ? sorted.map(propCard).join("")
-        : `<div class="empty-state"><p>No listing matches your filters yet.</p><p class="lead" style="margin-top:8px">Send us your requirement on WhatsApp and we'll find matching options for you.</p><button class="btn btn-wa" data-wa="Hello ${SITE.short}, I'm looking for a property. Please help me find one.">💬 Tell Us What You Need</button></div>`;
+        : `<div class="empty-state"><p>No listing matches your filters yet.</p><p class="lead" style="margin-top:8px">Send us your requirement on WhatsApp and we'll find matching options for you.</p><button class="btn btn-wa" data-wa="${encodeURIComponent(`Hello ${SITE.short}, I'm looking for a property. Please help me find one.`)}">💬 Tell Us What You Need</button></div>`;
     };
     [fLoc, fType, fPurpose, fMin, fMax, fSort].forEach(f => f.addEventListener("change", render));
     if (btnReset) btnReset.addEventListener("click", () => {
@@ -283,7 +303,7 @@
   const propDetail = document.getElementById("property-detail");
   if (propDetail) {
     const slug = propDetail.dataset.slug || "";
-    const p = findProperty(slug);
+    const p = findPropertyLocal(slug);
     if (!p) {
       propDetail.innerHTML = `<div class="empty-state"><p>Property not found.</p><a href="../properties.html" class="btn btn-solid">Browse All Properties</a></div>`;
     } else {
@@ -302,7 +322,7 @@
       propDetail.innerHTML = `
       <section class="property-hero">
         <div class="gallery" id="mainGallery">
-          <img id="mainImg" src="${p.photographs[0]}" alt="${encHTML(p.title)} ${p.location} ${p.type}" loading="eager">
+          <img id="mainImg" src="${p.coverImage}" alt="${encHTML(p.title)} ${p.location} ${p.type}" loading="eager">
           <span class="badge">${encHTML(p.type)}</span>
           <span class="sale-tag">For ${encHTML(p.purpose)}</span>
           ${p.sample ? '<span class="badge sample">Sample</span>' : ""}
@@ -346,7 +366,7 @@
             <a class="btn btn-solid" href="tel:${OWNERS[0].tel}">📞 Call ${OWNERS[0].phone}</a>
           </div>
           <h3>Related Properties</h3>
-          <div class="related-grid">${PROPERTIES.filter(x => x.id !== p.id && x.location === p.location).slice(0, 3).map(propCard).join("")}</div>
+          <div class="related-grid">${properties.filter(x => x.id !== p.id && x.location === p.location).slice(0, 3).map(propCard).join("")}</div>
         </aside>
       </div>`;
       /* Page title / meta update */
@@ -605,7 +625,7 @@ Message: ${f.msg.value || "-"}`);
       </section>`;
       const locList = document.getElementById("loc-list-" + key);
       if (locList) {
-        const filtered = PROPERTIES.filter(p => p.location === loc.name);
+        const filtered = properties.filter(p => p.location === loc.name);
         locList.innerHTML = filtered.length ? filtered.map(propCard).join("")
           : `<div class="empty-state"><p>No active listings in ${loc.name} right now.</p><p class="lead" style="margin-top:8px">Send us your requirement on WhatsApp and we'll notify you when matching properties become available.</p><button class="btn btn-wa" data-wa="Hello ${SITE.short}, notify me when properties become available in ${loc.name}.">💬 Notify Me</button></div>`;
       }

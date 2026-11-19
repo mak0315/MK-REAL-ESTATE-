@@ -1,0 +1,27 @@
+{
+  "id": "MK-001",
+  "slug": "mk-001-5-marla-corner-plot",
+  "title": "5 Marla Corner Plot",
+  "type": "Residential Plot",
+  "purpose": "Sale",
+  "location": "Havelian",
+  "address": "Developed housing scheme, Havelian",
+  "area": 5,
+  "areaUnit": "Marla",
+  "price": 2800000,
+  "pricingType": "fixed",
+  "pricePerMarla": 560000,
+  "bedrooms": null,
+  "bathrooms": null,
+  "amenities": ["Electricity", "Gas", "Water Supply", "Paved Road"],
+  "tags": ["Corner Plot", "Registry Available", "Main Road"],
+  "description": "A 5 Marla residential corner plot in a developed housing scheme of Havelian. Corner location with easy access from two sides. Suitable for house construction or investment. Registry documents available.",
+  "coverImage": "https://images.unsplash.com/photo-1529147688730-3e0d079e9c02?q=80&w=1600&auto=format&fit=crop",
+  "photographs": [
+    "https://images.unsplash.com/photo-1529147688730-3e0d079e9c02?q=80&w=1600&auto=format&fit=crop"
+  ],
+  "featured": true,
+  "status": "active",
+  "dateAdded": "2026-11-01",
+  "sample": true
+}

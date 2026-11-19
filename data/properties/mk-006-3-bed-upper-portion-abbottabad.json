@@ -1,0 +1,27 @@
+{
+  "id": "MK-006",
+  "slug": "mk-006-3-bed-upper-portion-abbottabad",
+  "title": "3 Bed Upper Portion",
+  "type": "House",
+  "purpose": "Rent",
+  "location": "Abbottabad",
+  "address": "Family area, Abbottabad",
+  "area": null,
+  "areaUnit": null,
+  "price": 35000,
+  "pricingType": "fixed",
+  "pricePerMarla": null,
+  "bedrooms": 3,
+  "bathrooms": 2,
+  "amenities": ["3 Bedrooms", "2 Bathrooms", "Kitchen", "Family Area"],
+  "tags": ["3 Beds", "2 Baths", "Family Area"],
+  "description": "A 3-bedroom upper portion on rent in Abbottabad, located in a family area with 2 bathrooms. Suitable for a small family.",
+  "coverImage": "https://images.unsplash.com/photo-1502672260266-1c1ef1d79d6d?q=80&w=1600&auto=format&fit=crop",
+  "photographs": [
+    "https://images.unsplash.com/photo-1502672260266-1c1ef1d79d6d?q=80&w=1600&auto=format&fit=crop"
+  ],
+  "featured": false,
+  "status": "active",
+  "dateAdded": "2026-11-06",
+  "sample": true
+}

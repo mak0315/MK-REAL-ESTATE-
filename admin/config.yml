@@ -1,0 +1,47 @@
+backend:
+  name: github
+  repo: mak0315/MK-REAL-ESTATE-
+  branch: main
+  base_url: https://mkrealestate.vercel.app
+  auth_endpoint: /api/auth
+
+media_folder: "images/properties"
+public_folder: "/images/properties"
+
+collections:
+  - name: "properties"
+    label: "Properties"
+    label_singular: "Property"
+    folder: "data/properties"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} &mdash; {{location}}"
+    fields:
+      - { name: "id", label: "Property ID", widget: "string", required: true }
+      - { name: "title", label: "Title", widget: "string", required: true }
+      - { name: "slug", label: "URL Slug", widget: "string", required: true }
+      - { name: "description", label: "Description", widget: "text", required: true }
+      - { name: "type", label: "Property Type", widget: "select", required: true,
+          options: ["Residential Plot", "House", "Commercial", "Agricultural Land", "Shop", "Building", "Investment Property"] }
+      - { name: "purpose", label: "Purpose", widget: "select", required: true,
+          options: ["Sale", "Rent"] }
+      - { name: "location", label: "Location", widget: "string", required: true }
+      - { name: "address", label: "Address", widget: "string" }
+      - { name: "area", label: "Area (number)", widget: "number" }
+      - { name: "areaUnit", label: "Area Unit", widget: "select",
+          options: ["Marla", "Kanal", "sq ft"] }
+      - { name: "price", label: "Asking Price (PKR)", widget: "number", required: true }
+      - { name: "pricingType", label: "Pricing Type", widget: "select",
+          options: ["fixed", "negotiable", "onRequest"] }
+      - { name: "pricePerMarla", label: "Price per Marla (PKR)", widget: "number" }
+      - { name: "bedrooms", label: "Bedrooms", widget: "number" }
+      - { name: "bathrooms", label: "Bathrooms", widget: "number" }
+      - { name: "amenities", label: "Amenities", widget: "list" }
+      - { name: "tags", label: "Tags", widget: "list" }
+      - { name: "coverImage", label: "Cover Image", widget: "image", required: true }
+      - { name: "photographs", label: "Additional Photographs", widget: "list",
+          field: { widget: "image" } }
+      - { name: "featured", label: "Featured Property", widget: "boolean", default: false }
+      - { name: "status", label: "Availability Status", widget: "select",
+          options: ["active", "sold", "rented", "unavailable"], default: "active" }
+      - { name: "dateAdded", label: "Date Added", widget: "datetime", required: true }
