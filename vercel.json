@@ -2,6 +2,7 @@
   "version": 2,
   "routes": [
     { "src": "/admin/config.yml", "headers": { "content-type": "text/yaml" } },
+    { "src": "^/admin$", "status": 301, "headers": { "Location": "/admin/" } },
     { "src": "/admin/(.*)", "headers": { "content-type": "text/html" }, "dest": "/admin/index.html" },
     { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/(.*)", "dest": "/$1" }
