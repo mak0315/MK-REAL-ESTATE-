@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Properties for Sale &amp; Rent | Muneeb Khan MK Real Estate</title>
+<meta name="description" content="Browse plots, houses, commercial shops and agricultural land in Havelian, Sultanpur and Abbottabad. Filter by location and type, then inquire directly on WhatsApp.">
+<meta property="og:title" content="Properties for Sale &amp; Rent | MK Real Estate">
+<meta property="og:description" content="Browse verified plots, houses, commercial property and land in Havelian, Sultanpur and Abbottabad. Inquire directly on WhatsApp.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mkrealestate.vercel.app/properties.html">
+<meta property="og:image" content="https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1200&auto=format&fit=crop">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Properties for Sale &amp; Rent | MK Real Estate">
+<meta name="twitter:description" content="Browse verified plots, houses, commercial property and land in Havelian, Sultanpur and Abbottabad.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1200&auto=format&fit=crop">
+<link rel="canonical" href="https://mkrealestate.vercel.app/properties.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="properties">
+
+<section class="page-hero">
+  <div class="overlay"></div>
+  <div class="wrap">
+    <span class="eyebrow">Our Listings</span>
+    <h1>Properties for <em>Sale &amp; Rent</em></h1>
+    <p>Filter by location, type and purpose, then inquire directly on WhatsApp in one tap.</p>
+  </div>
+</section>
+
+<section style="padding-top:46px">
+  <div class="wrap">
+    <div class="breadcrumbs"><a href="index.html">Home</a><span class="sep">›</span><span>Properties</span></div>
+    <div class="filters">
+      <div class="field"><label>Location</label><select id="fLoc"></select></div>
+      <div class="field"><label>Type</label><select id="fType"><option value="">All types</option><option>Residential Plot</option><option>House</option><option>Commercial</option><option>Agricultural Land</option><option>Shop</option><option>Building</option><option>Investment Property</option></select></div>
+      <div class="field"><label>Purpose</label><select id="fPurpose"><option value="">Sale &amp; Rent</option><option>Sale</option><option>Rent</option></select></div>
+    </div>
+    <div class="grid g3" id="propList"></div>
+  </div>
+</section>
+
+<section class="dark"><div class="wrap" data-commission></div></section>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

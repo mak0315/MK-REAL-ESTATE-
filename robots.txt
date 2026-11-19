@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Disallow nothing critical; keep all public pages crawlable
+Disallow:
+
+# Sitemap location
+Sitemap: https://mkrealestate.vercel.app/sitemap.xml
