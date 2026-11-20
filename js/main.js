@@ -15,19 +15,41 @@
   const isLocationPage = !!document.getElementById("location-page");
 
   /* ---------- Fetch properties from CMS data ---------- */
+  function imageUrl(item) {
+    if (typeof item === "string") return item;
+    if (item && typeof item === "object") return item.image || item.src || item.path || item.url || "";
+    return "";
+  }
+
+  function normalizeProperty(p) {
+    const photos = (Array.isArray(p.photographs) ? p.photographs : []).map(imageUrl).filter(Boolean);
+    const fallbackSlug = String(p.id || p.title || "property")
+      .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    return {
+      ...p,
+      slug: p.slug || fallbackSlug,
+      tags: Array.isArray(p.tags) ? p.tags : [],
+      amenities: Array.isArray(p.amenities) ? p.amenities : [],
+      photographs: photos.length ? photos : (p.coverImage ? [p.coverImage] : []),
+    };
+  }
+
   let properties = [];
   try {
     const res = await fetch("/api/properties", { cache: "no-store" });
-    if (res.ok) properties = await res.json();
+    if (!res.ok) throw new Error("Properties API returned " + res.status);
+    properties = await res.json();
   } catch (e) {
-    /* fall back to static JSON file */
+    /* fall back to the static aggregate file */
     try {
-      const res2 = await fetch("data/properties.json");
-      if (res2.ok) properties = await res2.json();
+      const res2 = await fetch("/data/properties.json");
+      if (!res2.ok) throw new Error("Static data returned " + res2.status);
+      properties = await res2.json();
     } catch (e2) {
       /* fall back to empty array */
     }
   }
+  properties = (Array.isArray(properties) ? properties : []).map(normalizeProperty);
   window.PROPERTIES = properties;
 
   function findPropertyLocal(idOrSlug) {
@@ -231,7 +253,7 @@
       <div class="card-body">
         <h3><a href="${purl}">${encHTML(p.title)}</a></h3>
         <div class="prop-loc">📍 ${encHTML(p.location)} · ${encHTML(p.purpose)}</div>
-        <div class="tags">${p.tags.map(t => `<span>${encHTML(t)}</span>`).join("")}</div>
+        ${p.tags.length ? `<div class="tags">${p.tags.map(t => `<span>${encHTML(t)}</span>`).join("")}</div>` : ""}
         ${pricingTypeHtml}
         <div class="price">${formatPrice(p.price, p.purpose)}</div>
         ${pricePerMarlaHtml}
@@ -302,7 +324,13 @@
   /* ---------- Property detail page ---------- */
   const propDetail = document.getElementById("property-detail");
   if (propDetail) {
-    const slug = propDetail.dataset.slug || "";
+    let slug = propDetail.dataset.slug || "";
+    if (!slug) {
+      // CMS-created listings use the shared detail template, so read the slug
+      // from /properties/<slug>.html in the address bar.
+      const match = location.pathname.match(/\/properties\/([^/]+)\.html$/);
+      if (match) slug = decodeURIComponent(match[1]);
+    }
     const p = findPropertyLocal(slug);
     if (!p) {
       propDetail.innerHTML = `<div class="empty-state"><p>Property not found.</p><a href="../properties.html" class="btn btn-solid">Browse All Properties</a></div>`;
@@ -319,6 +347,9 @@
         <div class="thumb${i === 0 ? " active" : ""}" onclick="document.getElementById('mainImg').src='${img}'">
           <img src="${img}" alt="${encHTML(p.title)} thumbnail ${i + 1}" loading="lazy">
         </div>`).join("");
+      const amenitiesHtml = p.amenities.length
+        ? `<h3>Amenities</h3><div class="amenities">${p.amenities.map(a => `<span class="amenity">${encHTML(a)}</span>`).join("")}</div>`
+        : "";
       propDetail.innerHTML = `
       <section class="property-hero">
         <div class="gallery" id="mainGallery">
@@ -342,8 +373,7 @@
             <span class="price-note">Asking price · ${p.purpose.toLowerCase()} · ${encHTML(p.location)}</span>
           </div>
           ${p.pricePerMarla ? `<div class="price-per-marla-detail">${formatPricePerMarla(p.pricePerMarla)}</div>` : ""}
-          <h3>Amenities</h3>
-          <div class="amenities">${p.amenities.map(a => `<span class="amenity">${encHTML(a)}</span>`).join("")}</div>
+          ${amenitiesHtml}
           <div class="actions">
             <a class="btn btn-wa" target="_blank" rel="noopener" href="${waLink(OWNERS[0], waMsg)}">💬 Inquire on WhatsApp</a>
             <a class="btn btn-solid" href="tel:${OWNERS[0].tel}">📞 Call ${OWNERS[0].phone}</a>
@@ -371,13 +401,15 @@
       </div>`;
       /* Page title / meta update */
       document.title = `${p.title} | ${SITE.name} | ${p.location}`;
+      const canonical = document.querySelector('link[rel="canonical"]');
+      if (canonical) canonical.href = location.origin + location.pathname;
       ld({
         "@context": "https://schema.org",
         "@type": "Product",
         "@id": SITE.url + "/properties/" + p.slug + ".html#product",
         name: p.title,
         description: p.description,
-        image: p.photographs[0],
+        image: p.coverImage || p.photographs[0],
         url: SITE.url + "/properties/" + p.slug + ".html",
         brand: { "@type": "Brand", name: SITE.name },
         offers: {
@@ -395,7 +427,7 @@
           p.pricePerMarla ? { name: "Price per Marla", value: formatPricePerMarla(p.pricePerMarla) } : null,
           p.bedrooms ? { name: "Bedrooms", value: String(p.bedrooms) } : null,
           p.bathrooms ? { name: "Bathrooms", value: String(p.bathrooms) } : null,
-          { name: "Pricing Type", value: p.pricingType.charAt(0).toUpperCase() + p.pricingType.slice(1) },
+          { name: "Pricing Type", value: (p.pricingType || "fixed").charAt(0).toUpperCase() + (p.pricingType || "fixed").slice(1) },
           { name: "Status", value: p.status.charAt(0).toUpperCase() + p.status.slice(1) }
         ].filter(Boolean),
         address: {

@@ -16,12 +16,12 @@ collections:
     format: json
     extension: json
     create: true
-    slug: "{{fields.slug}}"
+    identifier_field: title
+    slug: "{{slug}}"
     summary: "{{title}} — {{location}}"
     fields:
       - { name: "id", label: "Property ID", widget: "string", required: true }
       - { name: "title", label: "Title", widget: "string", required: true }
-      - { name: "slug", label: "URL Slug", widget: "string", required: true }
       - { name: "description", label: "Description", widget: "text", required: true }
       - { name: "type", label: "Property Type", widget: "select", required: true,
           options: ["Residential Plot", "House", "Commercial", "Agricultural Land", "Shop", "Building", "Investment Property"] }
@@ -38,10 +38,11 @@ collections:
       - { name: "pricePerMarla", label: "Price per Marla (PKR)", widget: "number" }
       - { name: "bedrooms", label: "Bedrooms", widget: "number" }
       - { name: "bathrooms", label: "Bathrooms", widget: "number" }
-      - { name: "amenities", label: "Amenities", widget: "list" }
-      - { name: "tags", label: "Tags", widget: "list" }
       - { name: "coverImage", label: "Cover Image", widget: "image", required: true }
-      - { name: "photographs", label: "Additional Photographs (image URLs)", widget: "list" }
+      - name: "photographs"
+        label: "Additional Photographs"
+        widget: "list"
+        field: { name: "image", label: "Photo", widget: "image" }
       - { name: "featured", label: "Featured Property", widget: "boolean", default: false }
       - { name: "status", label: "Availability Status", widget: "select",
           options: ["active", "sold", "rented", "unavailable"], default: "active" }

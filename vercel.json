@@ -5,6 +5,8 @@
     { "src": "^/admin$", "status": 301, "headers": { "Location": "/admin/" } },
     { "src": "/admin/(.*)", "headers": { "content-type": "text/html" }, "dest": "/admin/index.html" },
     { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "handle": "filesystem" },
+    { "src": "^/properties/[^/]+\\.html$", "dest": "/property.html" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
