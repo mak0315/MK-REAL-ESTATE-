@@ -13,8 +13,10 @@ collections:
     label: "Properties"
     label_singular: "Property"
     folder: "data/properties"
+    format: json
+    extension: json
     create: true
-    slug: "{{slug}}"
+    slug: "{{fields.slug}}"
     summary: "{{title}} — {{location}}"
     fields:
       - { name: "id", label: "Property ID", widget: "string", required: true }
@@ -39,9 +41,8 @@ collections:
       - { name: "amenities", label: "Amenities", widget: "list" }
       - { name: "tags", label: "Tags", widget: "list" }
       - { name: "coverImage", label: "Cover Image", widget: "image", required: true }
-      - { name: "photographs", label: "Additional Photographs", widget: "list",
-          field: { name: "image", label: "Image", widget: "image" } }
+      - { name: "photographs", label: "Additional Photographs (image URLs)", widget: "list" }
       - { name: "featured", label: "Featured Property", widget: "boolean", default: false }
       - { name: "status", label: "Availability Status", widget: "select",
           options: ["active", "sold", "rented", "unavailable"], default: "active" }
-      - { name: "dateAdded", label: "Date Added", widget: "datetime", required: true }
+      - { name: "dateAdded", label: "Date Added", widget: "datetime", required: true, date_format: true }
