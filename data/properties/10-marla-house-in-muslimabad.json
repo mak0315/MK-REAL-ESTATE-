@@ -1,0 +1,23 @@
+{
+  "id": "2",
+  "title": "10 marla house in muslimabad",
+  "description": "10 marla house in muslimabad",
+  "type": "House",
+  "purpose": "Sale",
+  "location": "muslimabad near havelain interchange ",
+  "address": "muslimabad near havelain interchange ",
+  "area": 10,
+  "areaUnit": "Marla",
+  "price": 8000000,
+  "pricingType": "negotiable",
+  "pricePerMarla": 6,
+  "bedrooms": 4,
+  "bathrooms": 2,
+  "coverImage": "/images/properties/m2.jpeg",
+  "photographs": [
+    "/images/properties/m1.jpeg"
+  ],
+  "featured": false,
+  "status": "active",
+  "dateAdded": "2026-11-20"
+}
