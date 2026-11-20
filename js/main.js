@@ -215,6 +215,49 @@
     if (t) { e.preventDefault(); openChooser(t.dataset.wa); }
   });
 
+  /* ---------- Share a listing ---------- */
+  function showToast(message) {
+    let el = document.getElementById("shareToast");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "shareToast";
+      el.className = "share-toast";
+      document.body.appendChild(el);
+    }
+    el.textContent = message;
+    el.classList.add("show");
+    clearTimeout(showToast._timer);
+    showToast._timer = setTimeout(() => el.classList.remove("show"), 2600);
+  }
+
+  async function shareProperty(p) {
+    const url = location.origin + "/properties/" + encodeURIComponent(p.slug) + ".html";
+    const title = p.title + " | " + SITE.name;
+    const text = `${p.title} in ${p.location} · ${formatPrice(p.price, p.purpose)}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text, url });
+        return;
+      } catch (err) {
+        if (err && err.name === "AbortError") return;
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      showToast("Link copied — send it to your contacts!");
+    } catch (err) {
+      window.prompt("Copy this link to share:", url);
+    }
+  }
+
+  document.addEventListener("click", e => {
+    const btn = e.target.closest("[data-share]");
+    if (!btn) return;
+    e.preventDefault();
+    const p = findPropertyLocal(btn.dataset.share);
+    if (p) shareProperty(p);
+  });
+
   /* Mobile menu */
   const burger = document.getElementById("burger");
   const navLinks = document.getElementById("navLinks");
@@ -259,6 +302,7 @@
         ${pricePerMarlaHtml}
         <div class="card-foot">
           <a href="${purl}" class="btn btn-ghost btn-sm">View Details</a>
+          <button class="btn btn-ghost btn-sm" data-share="${enc(p.slug)}" aria-label="Share ${encHTML(p.title)}">🔗 Share</button>
           <button class="btn btn-wa btn-sm" data-wa="${msg.replace(/"/g, "&quot;")}">💬 WhatsApp</button>
         </div>
       </div>
@@ -376,6 +420,7 @@
           ${amenitiesHtml}
           <div class="actions">
             <a class="btn btn-wa" target="_blank" rel="noopener" href="${waLink(OWNERS[0], waMsg)}">💬 Inquire on WhatsApp</a>
+            <button class="btn btn-ghost" data-share="${enc(p.slug)}">🔗 Share</button>
             <a class="btn btn-solid" href="tel:${OWNERS[0].tel}">📞 Call ${OWNERS[0].phone}</a>
           </div>
         </div>
@@ -393,6 +438,7 @@
           <p>${OWNERS[0].name} · ${OWNERS[0].role}</p>
           <div class="actions" style="margin-bottom:0">
             <a class="btn btn-wa" target="_blank" rel="noopener" href="${waLink(OWNERS[0], waMsg)}">💬 WhatsApp ${OWNERS[0].phone}</a>
+            <button class="btn btn-ghost" data-share="${enc(p.slug)}">🔗 Share</button>
             <a class="btn btn-solid" href="tel:${OWNERS[0].tel}">📞 Call ${OWNERS[0].phone}</a>
           </div>
           <h3>Related Properties</h3>

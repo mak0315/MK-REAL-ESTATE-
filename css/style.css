@@ -102,7 +102,7 @@ section{padding:86px 0;position:relative}
 .property-card .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
 .property-card .tags span{font-size:.72rem;font-weight:600;letter-spacing:.04em;background:#f0f5f1;border:1px solid var(--line);padding:3px 9px;border-radius:999px;color:var(--green)}
 .property-card .price{font-family:var(--font-serif);font-size:1.2rem;font-weight:700;color:var(--green);margin-top:auto}
-.property-card .card-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:8px}
+.property-card .card-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:8px;flex-wrap:wrap}
 .property-card .price-per-marla{font-size:.82rem;color:var(--muted);margin-top:4px}
 .property-card .pricing-negotiable{font-size:.74rem;font-weight:600;color:var(--green);margin-top:4px}
 .property-card .pricing-onrequest{font-size:.74rem;font-weight:600;color:var(--muted);margin-top:4px}
@@ -241,6 +241,8 @@ section{padding:86px 0;position:relative}
 .amenity{font-size:.84rem;font-weight:600;padding:7px 13px;border:1px solid var(--line);border-radius:6px;color:var(--ink);background:#fff}
 .related-grid{display:grid;gap:16px}
 .related-grid .property-card .card-media{height:180px}
+.share-toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);max-width:90vw;text-align:center;background:var(--ink);color:#fff;padding:12px 18px;border-radius:10px;font-size:.88rem;box-shadow:0 10px 32px rgba(0,0,0,.28);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:9999}
+.share-toast.show{opacity:1;transform:translate(-50%,0)}
 
 /* ---------- Location page ---------- */
 .location-hero{position:relative;border-radius:var(--radius);overflow:hidden;background:var(--green);color:#fff;text-align:center;padding:100px 20px;margin-bottom:44px}
