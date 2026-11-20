@@ -10,7 +10,7 @@
   "areaUnit": "Marla",
   "price": 8000000,
   "pricingType": "negotiable",
-  "pricePerMarla": 6,
+  "pricePerMarla": 600000,
   "bedrooms": 4,
   "bathrooms": 2,
   "coverImage": "/images/properties/m2.jpeg",
