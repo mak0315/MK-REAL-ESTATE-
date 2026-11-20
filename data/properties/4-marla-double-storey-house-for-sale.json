@@ -1,0 +1,24 @@
+{
+  "id": "01",
+  "title": "4 marla double storey ",
+  "slug": "4 Marla Double-Storey House for Sale",
+  "description": "4 Marla Double-Storey House for Sale\nProperty Details\nA well-maintained 4 Marla double-storey house is available for sale. The property has a single owner and offers spacious rooms, separate kitchens and bathrooms on both floors.\nGround Floor\n- 2 Spacious Bedrooms\n- 2 Bathrooms\n- 1 Kitchen\n First Floor\n- 3 Spacious Bedrooms\n- 2 Bathrooms\n- 1 Kitchen\n Facilities & Features\n- 4 Marla residential property\n- Double-storey construction\n- Single-owner property\n- Gas connection available\n- Electricity available\n- Water facility available\n- Wide road access\n- Car can easily reach and park right in front of the main entrance\n- Ideal for family living or investment\n\nA great opportunity for families looking for a spacious home with all essential utilities and convenient road access.",
+  "type": "House",
+  "purpose": "Sale",
+  "location": "sultanpur mohala tonali ",
+  "address": "sultanpur mohala tonali ",
+  "area": 4,
+  "areaUnit": "Marla",
+  "price": 9000000,
+  "pricingType": "negotiable",
+  "pricePerMarla": 1000000,
+  "bedrooms": 5,
+  "bathrooms": 4,
+  "tags": [
+    "house in sultan pur"
+  ],
+  "coverImage": "/images/properties/2.jpeg",
+  "featured": false,
+  "status": "active",
+  "dateAdded": "2026-11-20"
+}
